@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InformacaoHabilitacao>
+  <Serial>U83K-Y4KU-L3LH</Serial>
+  <Creditos>3</Creditos>
+  <Sistema>Gerencial</Sistema>
+  <Versao>G6</Versao>
+  <VersaoPafEcf>2</VersaoPafEcf>
+  <DataValidacao>2020-10-03T00:00:00</DataValidacao>
+  <Matriz>
+    <Cnpj>04.618.547/0001-06</Cnpj>
+    <InscricaoEstadual>0480026335</InscricaoEstadual>
+    <RegistroMunicipal>147</RegistroMunicipal>
+    <Cnae>1112700</Cnae>
+    <Email>vinicolamascarello@gmail.com</Email>
+    <RazaoSocial>VINICOLA MASCARELLO LTDA</RazaoSocial>
+    <Telefone>54 3292 5719</Telefone>
+    <Endereco>
+      <Logradouro>ESTRADA RS 122</Logradouro>
+      <Numero>SN</Numero>
+      <Cep>95270-000</Cep>
+      <Complemento>KM 102,5</Complemento>
+      <Bairro>INTERIOR</Bairro>
+      <CodigoIbgeMunicipio>4308201</CodigoIbgeMunicipio>
+    </Endereco>
+    <RamoAtividade>Comercio</RamoAtividade>
+    <Perfil>
+      <Uf>RS</Uf>
+      <CodigoPerfil>48</CodigoPerfil>
+    </Perfil>
+    <TipoAtividadeRestaurante>Indefinido</TipoAtividadeRestaurante>
+  </Matriz>
+  <HabilitadoMEI>false</HabilitadoMEI>
+  <Locacao>false</Locacao>
+</InformacaoHabilitacao>
+<!--oAF9hecF7Ugu50gA8JOz9zQCuTBhFX3UhjJfnF74CvyJHOrvFool761PvV2IMBJN+ApOWk5AN6DzTUx0l00J+wpOAfzcfE866kBMUXICQpPNrL5V5sAh+q7r+nIs+h6Jt0yCu5LYLyGd5JZtT99Q1JeTD89w88h4q/3gBqDsJoU=-->
