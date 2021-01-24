@@ -12,7 +12,8 @@ class Generator:
     registro_70 = []
     registro_90 = []
 
-    def set_registro_10(self, cnpj, registro_mapa, razao_social, endereco, municipio, cep, versao):
+    def set_registro_10(self, cnpj: str, registro_mapa: str, razao_social: str, endereco: str, municipio: str, cep: str,
+                        versao: str):
         if len(cnpj) != 14:
             return 'CNPJ Invalido'
         if len(registro_mapa) > 8:
@@ -27,7 +28,7 @@ class Generator:
             return 'cep Invalido'
         if len(versao) > 10:
             return 'versao Invalido'
-        self.registro_10.append({
+        self.registro_10.append([
             cnpj,
             registro_mapa,
             razao_social,
@@ -35,7 +36,7 @@ class Generator:
             municipio,
             cep,
             versao
-        })
+        ])
 
     def set_registro_11(self, telefone, fax, tipo_empresa, ie, diretor, responsavel_tecnico, documento_tecnico, email):
         if len(telefone) > 15:
@@ -55,7 +56,7 @@ class Generator:
         if len(email) > 40:
             return 'email Invalido'
 
-        self.registro_11.append({
+        self.registro_11.append([
             telefone,
             fax,
             tipo_empresa,
@@ -64,7 +65,7 @@ class Generator:
             responsavel_tecnico,
             documento_tecnico,
             email
-        })
+        ])
 
     def set_registro_15(self, cnpj, codigo, descricao, marca, produto, tipo, classe, especie, percentual, safra,
                         unidade):
@@ -102,7 +103,7 @@ class Generator:
         if len(unidade) > 2 or unidade not in unidades:
             return 'unidade Invalido'
 
-        self.registro_15.append({
+        self.registro_15.append([
             cnpj,
             codigo,
             descricao,
@@ -114,7 +115,7 @@ class Generator:
             percentual,
             safra,
             unidade
-        })
+        ])
 
     def set_registro_20(self, cnpj, mes, ano, operacao, numero, uf, tipo, serie):
         if len(cnpj) > 14:
@@ -134,7 +135,7 @@ class Generator:
         if len(serie) > 3:
             return 'serie Invalido'
 
-        self.registro_20.append({
+        self.registro_20.append([
             cnpj,
             mes,
             ano,
@@ -143,7 +144,7 @@ class Generator:
             uf,
             tipo,
             serie
-        })
+        ])
 
     def set_registro_21(self, cgc, produto, embalagem, litros):
         if len(cgc) > 14:
@@ -155,12 +156,12 @@ class Generator:
         if len(litros) > 10:
             return 'litros Invalido'
 
-        self.registro_21.append({
+        self.registro_21.append([
             cgc,
             produto,
             embalagem,
             litros
-        })
+        ])
 
     def set_registro_52(self, cgc, mes, ano):
         if len(cgc) > 14:
@@ -170,11 +171,11 @@ class Generator:
         if len(ano) > 4:
             return 'ano Invalido'
 
-        self.registro_52.append({
+        self.registro_52.append([
             cgc,
             mes,
             ano
-        })
+        ])
 
     def set_registro_53(self, cgc, produto, litros):
         if len(cgc) > 14:
@@ -184,11 +185,11 @@ class Generator:
         if len(litros) > 10:
             return 'litros Invalido'
 
-        self.registro_53.append({
+        self.registro_53.append([
             cgc,
             produto,
             litros
-        })
+        ])
 
     def set_registro_70(self, cgc, produto, quantidade, mes, ano, operacao):
         if len(cgc) > 14:
@@ -204,14 +205,14 @@ class Generator:
         if len(operacao) > 2:
             return 'operacao Invalido'
 
-        self.registro_70.append({
+        self.registro_70.append([
             cgc,
             produto,
             quantidade,
             mes,
             ano,
             operacao
-        })
+        ])
 
     def set_registro_90(self, total_litros, total_kg, valor_total, total_linhas):
         if len(total_litros) > 20:
@@ -240,10 +241,10 @@ class Generator:
             line += x[1].ljust(8)
             line += x[2].ljust(40)
             line += x[3].ljust(40)
-            line += x[4].ljust(8, '0')
+            line += x[4].rjust(8, '0')
             line += x[5].ljust(8, '0')
             line += x[6].ljust(10)
-            line += ''.ljust(30)
+            line += '\n'.rjust(31)
             f.write(line)
 
         for x in self.registro_11:
@@ -256,7 +257,7 @@ class Generator:
             line += x[5].ljust(30)
             line += x[6].ljust(10, '0')
             line += x[7].ljust(40)
-            line += ''.ljust(1)
+            line += '\n'.rjust(2)
             f.write(line)
 
         for x in self.registro_15:
@@ -273,7 +274,7 @@ class Generator:
             line += x[8].ljust(3, '0')
             line += x[9].ljust(4, '0')
             line += x[10].ljust(2)
-            line += ''.ljust(136)
+            line += '\n'.rjust(137)
             f.write(line)
 
         for x in self.registro_20:
@@ -286,7 +287,7 @@ class Generator:
             line += x[5].ljust(2)
             line += x[6].ljust(1)
             line += x[7].ljust(3)
-            line += ''.ljust(120)
+            line += '\n'.rjust(122)
             f.write(line)
 
         for x in self.registro_21:
@@ -295,7 +296,7 @@ class Generator:
             line += x[1].ljust(15)
             line += x[2].ljust(2, '0')
             line += x[3].ljust(10, '0')
-            line += ''.ljust(117)
+            line += '\n'.rjust(118)
             f.write(line)
 
         for x in self.registro_52:
@@ -303,7 +304,7 @@ class Generator:
             line += x[0].ljust(14, '0')
             line += x[1].ljust(2, '0')
             line += x[2].ljust(4, '0')
-            line += ''.ljust(138)
+            line += '\n'.rjust(139)
             f.write(line)
 
         for x in self.registro_53:
@@ -311,7 +312,7 @@ class Generator:
             line += x[0].ljust(14, '0')
             line += x[1].ljust(15, '0')
             line += x[2].ljust(10, '0')
-            line += ''.ljust(119)
+            line += '\n'.rjust(120)
             f.write(line)
 
         for x in self.registro_70:
@@ -322,7 +323,7 @@ class Generator:
             line += x[3].ljust(2, '0')
             line += x[4].ljust(4, '0')
             line += x[5].ljust(2, '0')
-            line += ''.ljust(122)
+            line += '\n'.rjust(123)
             f.write(line)
 
         for x in self.registro_90:
@@ -331,7 +332,7 @@ class Generator:
             line += x[1].ljust(20, '0')
             line += x[2].ljust(20, '0')
             line += x[3].ljust(10, '0')
-            line += ''.ljust(88)
+            line += '\n'.rjust(89)
             f.write(line)
 
         f.close()
