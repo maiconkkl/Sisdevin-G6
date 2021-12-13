@@ -1,11 +1,11 @@
 import re
-
 from classes.pessoas import Pessoas
 from classes.connection import Connection
 from classes.generator import Generator
+from classes.produto_servico import Produtos
 
-connection = Connection()
-connection = connection.get_connection()
+db_con = Connection()
+connection = db_con.get_connection()
 pessoas = Pessoas(connection, 'DigisatServer')
 emitente = pessoas.get_emitente()
 generator = Generator()
@@ -14,6 +14,7 @@ responsavel_tecnico = ''
 documento_tecnico = ''
 tipo_empresa = ''
 registro_mapa = ''
+
 for x in emitente['CamposPersonalizado']:
     if x['TipoPersonalizado']['Descricao'].lower() == 'responsavel tecnico nome':
         responsavel_tecnico = x['Valor']
@@ -86,19 +87,23 @@ generator.set_registro_11(
     documento_tecnico=documento_tecnico,
     email=emitente['Carteira']['EmailPrincipal']['Endereco']
 )
-'''
-generator.set_registro_15(
-    cnpj=emitente['Cnpj'],
-    codigo,
-    descricao,
-    marca,
-    produto,
-    tipo,
-    classe,
-    especie,
-    percentual,
-    safra,
-    unidade
-)
-'''
+produtos = Produtos(connection)
+produtos_vendidos = produtos.get_prod_vend()
+for produto in produtos_vendidos:
+    print(produto['descricao'])
+    generator.set_registro_15(
+        cnpj=emitente['Cnpj'],
+        codigo=produto['codigo'],
+        descricao=produto['descricao'],
+        marca=produto['marca'],
+        produto=produto['produto'],
+        tipo=produto['tipo'],
+        classe=produto['classe'],
+        especie=produto['especie'],
+        percentual=produto['percentual'],
+        safra=produto['safra'],
+        unidade=produto['unidade']
+    )
+
+
 generator.export_file()

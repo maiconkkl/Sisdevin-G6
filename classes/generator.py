@@ -10,24 +10,28 @@ class Generator:
     registro_52 = []
     registro_53 = []
     registro_70 = []
-    registro_90 = []
+
+    total_litros = 0
+    total_kg = 0
+    valor_total = 0
+    total_linhas = 1
 
     def set_registro_10(self, cnpj: str, registro_mapa: str, razao_social: str, endereco: str, municipio: str, cep: str,
                         versao: str):
         if len(cnpj) != 14:
-            return 'CNPJ Invalido'
+            raise ValueError('CNPJ Invalido')
         if len(registro_mapa) > 8:
-            return 'registro mapa Invalido'
+            raise ValueError('registro mapa Invalido')
         if len(razao_social) > 40:
-            return 'razao social Invalido'
+            raise ValueError('razao social Invalido')
         if len(endereco) > 40:
-            return 'endereco Invalido'
+            raise ValueError('endereco Invalido')
         if len(municipio) > 8:
-            return 'municipio Invalido'
+            raise ValueError('municipio Invalido')
         if len(cep) > 8:
-            return 'cep Invalido'
+            raise ValueError('cep Invalido')
         if len(versao) > 10:
-            return 'versao Invalido'
+            raise ValueError('versao Invalido')
         self.registro_10.append([
             cnpj,
             registro_mapa,
@@ -40,21 +44,21 @@ class Generator:
 
     def set_registro_11(self, telefone, fax, tipo_empresa, ie, diretor, responsavel_tecnico, documento_tecnico, email):
         if len(telefone) > 15:
-            return 'Telefone Invalido'
+            raise ValueError('Telefone Invalido')
         if len(fax) > 15:
-            return 'fax Invalido'
+            raise ValueError('fax Invalido')
         if len(tipo_empresa) > 2:
-            return 'Tipo empresa Invalido'
+            raise ValueError('Tipo empresa Invalido')
         if len(ie) > 15:
-            return 'Inscrição Estadual Invalido'
+            raise ValueError('Inscrição Estadual Invalido')
         if len(diretor) > 30:
-            return 'diretor Invalido'
+            raise ValueError('diretor Invalido')
         if len(responsavel_tecnico) > 30:
-            return 'responsavel tecnico Invalido'
+            raise ValueError('responsavel tecnico Invalido')
         if len(documento_tecnico) > 10:
-            return 'documento do responsavel tecnico Invalido'
+            raise ValueError('documento do responsavel tecnico Invalido')
         if len(email) > 40:
-            return 'email Invalido'
+            raise ValueError('email Invalido')
 
         self.registro_11.append([
             telefone,
@@ -71,38 +75,38 @@ class Generator:
                         unidade):
         unidades = ['LT', 'KG']
         if len(cnpj) > 14:
-            return 'cnpj Invalido'
+            raise ValueError('cnpj Invalido')
 
         if len(codigo) > 15:
-            return 'codigo Invalido'
+            raise ValueError('codigo Invalido')
 
         if len(descricao) > 50:
-            return 'descricao Invalido'
+            raise ValueError('descricao Invalido')
 
         if len(marca) > 6:
-            return 'marca Invalido'
+            raise ValueError('marca Invalido')
 
         if len(produto) > 3:
-            return 'produto Invalido'
+            raise ValueError('produto Invalido')
 
         if len(tipo) > 2:
-            return 'tipo tecnico Invalido'
+            raise ValueError('tipo tecnico Invalido')
 
         if len(classe) > 2:
-            return 'classe Invalido'
+            raise ValueError('classe Invalido')
 
         if len(especie) > 4:
-            return 'especie Invalido'
+            raise ValueError('especie Invalido')
 
         if len(percentual) > 3:
-            return 'percentual Invalido'
+            raise ValueError('percentual Invalido')
 
         if len(safra) > 4:
-            return 'safra Invalido'
+            raise ValueError('safra Invalido')
 
         if len(unidade) > 2 or unidade not in unidades:
-            return 'unidade Invalido'
-
+            raise ValueError('Unidade Invalido, valores validos LT, KG e o valor informado foi {0}'.format(unidade))
+        
         self.registro_15.append([
             cnpj,
             codigo,
@@ -214,23 +218,6 @@ class Generator:
             operacao
         ])
 
-    def set_registro_90(self, total_litros, total_kg, valor_total, total_linhas):
-        if len(total_litros) > 20:
-            return 'total_litros Invalido'
-        if len(total_kg) > 20:
-            return 'total_kg Invalido'
-        if len(valor_total) > 20:
-            return 'valor_total Invalido'
-        if len(total_linhas) > 10:
-            return 'total_linhas Invalido'
-
-        self.registro_70.append({
-            total_litros,
-            total_kg,
-            valor_total,
-            total_linhas
-        })
-
     def export_file(self):
         data_atual = date.today()
         name_file = '{}-{}.txt'.format(data_atual.year, data_atual.month)
@@ -246,6 +233,7 @@ class Generator:
             line += x[6].ljust(10)
             line += '\n'.rjust(31)
             f.write(line)
+            self.total_linhas += 1
 
         for x in self.registro_11:
             line = '11'
@@ -259,7 +247,8 @@ class Generator:
             line += x[7].ljust(40)
             line += '\n'.rjust(2)
             f.write(line)
-
+            self.total_linhas += 1
+        
         for x in self.registro_15:
             line = '15'
             line += x[0].ljust(14, '0')
@@ -274,8 +263,9 @@ class Generator:
             line += x[8].ljust(3, '0')
             line += x[9].ljust(4, '0')
             line += x[10].ljust(2)
-            line += '\n'.rjust(137)
+            line += '\n'.rjust(45)
             f.write(line)
+            self.total_linhas += 1
 
         for x in self.registro_20:
             line = '20'
@@ -289,6 +279,7 @@ class Generator:
             line += x[7].ljust(3)
             line += '\n'.rjust(122)
             f.write(line)
+            self.total_linhas += 1
 
         for x in self.registro_21:
             line = '21'
@@ -298,6 +289,7 @@ class Generator:
             line += x[3].ljust(10, '0')
             line += '\n'.rjust(118)
             f.write(line)
+            self.total_linhas += 1
 
         for x in self.registro_52:
             line = '52'
@@ -306,6 +298,7 @@ class Generator:
             line += x[2].ljust(4, '0')
             line += '\n'.rjust(139)
             f.write(line)
+            self.total_linhas += 1
 
         for x in self.registro_53:
             line = '53'
@@ -314,6 +307,7 @@ class Generator:
             line += x[2].ljust(10, '0')
             line += '\n'.rjust(120)
             f.write(line)
+            self.total_linhas += 1
 
         for x in self.registro_70:
             line = '70'
@@ -325,14 +319,15 @@ class Generator:
             line += x[5].ljust(2, '0')
             line += '\n'.rjust(123)
             f.write(line)
-
-        for x in self.registro_90:
-            line = '90'
-            line += x[0].ljust(20, '0')
-            line += x[1].ljust(20, '0')
-            line += x[2].ljust(20, '0')
-            line += x[3].ljust(10, '0')
-            line += '\n'.rjust(89)
-            f.write(line)
+            self.total_linhas += 1
+        
+        # Registro 90
+        line = '90'
+        line += str(self.total_litros).rjust(20, '0')
+        line += str(self.total_kg).rjust(20, '0')
+        line += str(self.valor_total).rjust(20, '0')
+        line += str(self.total_linhas).rjust(10, '0')
+        line += '\n'.rjust(89)
+        f.write(line)
 
         f.close()
