@@ -88,9 +88,9 @@ generator.set_registro_11(
     email=emitente['Carteira']['EmailPrincipal']['Endereco']
 )
 produtos = Produtos(connection)
-produtos_vendidos = produtos.get_prod_vend()
+produtos_vendidos = produtos.get_prods()
+produtos.get_prod_vend()
 for produto in produtos_vendidos:
-    print(produto['descricao'])
     generator.set_registro_15(
         cnpj=emitente['Cnpj'],
         codigo=produto['codigo'],

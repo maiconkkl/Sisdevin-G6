@@ -6,7 +6,6 @@ class Generator:
     registro_11 = []
     registro_15 = []
     registro_20 = []
-    registro_21 = []
     registro_52 = []
     registro_53 = []
     registro_70 = []
@@ -73,7 +72,9 @@ class Generator:
 
     def set_registro_15(self, cnpj, codigo, descricao, marca, produto, tipo, classe, especie, percentual, safra,
                         unidade):
-        unidades = ['LT', 'KG']
+        unidades = ['LT', 'L', 'KG']
+        if unidade == 'L':
+            unidade = 'LT'
         if len(cnpj) > 14:
             raise ValueError('cnpj Invalido')
 
@@ -121,23 +122,38 @@ class Generator:
             unidade
         ])
 
-    def set_registro_20(self, cnpj, mes, ano, operacao, numero, uf, tipo, serie):
+    def set_registro_20(self, cnpj, mes, ano, operacao, numero, uf, tipo, serie, itens):
         if len(cnpj) > 14:
-            return 'cnpj Invalido'
+            raise ValueError('Cnpj Invalido')
+
         if len(mes) > 2:
-            return 'mes Invalido'
+            raise ValueError('Mes Invalido')
+
         if len(ano) > 4:
-            return 'ano Invalido'
+            raise ValueError('Ano Invalido')
+
         if len(operacao) > 2:
-            return 'operacao Invalido'
+            raise ValueError('Operacao Invalido')
+
         if len(numero) > 10:
-            return 'numero Invalido'
+            raise ValueError('Numero Invalido')
+
         if len(uf) > 2:
-            return 'uf Invalido'
+            raise ValueError('Uf Invalido')
+
         if len(tipo) > 1:
-            return 'tipo Invalido'
+            raise ValueError('Tipo Invalido')
+
         if len(serie) > 3:
-            return 'serie Invalido'
+            raise ValueError('Serie Invalido')
+
+        for item in itens:
+            self.set_registro_21(
+                'cgc': cnpj,
+                'produto': item['produto'],
+                'embalagem': item['embalagem'],
+                'litros': item['litros']
+            )
 
         self.registro_20.append([
             cnpj,
@@ -147,25 +163,23 @@ class Generator:
             numero,
             uf,
             tipo,
-            serie
+            serie,
+            itens
         ])
+        return '{0}{1}{2}{3}{4}{5}{6}{7}'.format(cnpj, mes, ano, operacao, numero, uf, tipo, serie)
 
     def set_registro_21(self, cgc, produto, embalagem, litros):
         if len(cgc) > 14:
-            return 'cgc Invalido'
-        if len(produto) > 15:
-            return 'produto Invalido'
-        if len(embalagem) > 2:
-            return 'embalagem Invalido'
-        if len(litros) > 10:
-            return 'litros Invalido'
+            raise ValueError('cgc Invalido')
 
-        self.registro_21.append([
-            cgc,
-            produto,
-            embalagem,
-            litros
-        ])
+        if len(produto) > 15:
+            raise ValueError('produto Invalido')
+
+        if len(embalagem) > 2:
+            raise ValueError('embalagem Invalido')
+
+        if len(litros) > 10:
+            raise ValueError('litros Invalido')
 
     def set_registro_52(self, cgc, mes, ano):
         if len(cgc) > 14:
@@ -327,7 +341,7 @@ class Generator:
         line += str(self.total_kg).rjust(20, '0')
         line += str(self.valor_total).rjust(20, '0')
         line += str(self.total_linhas).rjust(10, '0')
-        line += '\n'.rjust(89)
+        line += ''.rjust(88)
         f.write(line)
 
         f.close()
