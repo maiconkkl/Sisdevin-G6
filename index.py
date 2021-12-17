@@ -87,10 +87,9 @@ generator.set_registro_11(
     documento_tecnico=documento_tecnico,
     email=emitente['Carteira']['EmailPrincipal']['Endereco']
 )
-produtos = Produtos(connection)
-produtos_vendidos = produtos.get_prods()
-produtos.get_prod_vend()
-for produto in produtos_vendidos:
+
+prd = Produtos(connection)
+for produto in prd.get_prods():
     generator.set_registro_15(
         cnpj=emitente['Cnpj'],
         codigo=produto['codigo'],
@@ -105,5 +104,28 @@ for produto in produtos_vendidos:
         unidade=produto['unidade']
     )
 
+for nota in prd.get_notas():
+    registro_20 = []
+    registro_30 = []
+    for produto in nota['itens']:
+        if produto['embalagem'] in ['01', '02']:
+            registro_20.append(produto)
+
+        if produto['embalagem'] in ['03', '04']:
+            registro_30.append(produto)
+    
+    if len(registro_20) != 0:
+        print(nota['numero'], registro_20)
+        generator.set_registro_20(
+            cnpj=emitente['Cnpj'],
+            mes=nota['mes'],
+            ano=nota['ano'],
+            operacao=nota['operacao'], 
+            numero=nota['numero'], 
+            uf=nota['uf'], 
+            tipo=nota['tipo'], 
+            serie=nota['serie'], 
+            itens=registro_20
+        )
 
 generator.export_file()

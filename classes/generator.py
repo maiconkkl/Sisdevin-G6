@@ -123,25 +123,25 @@ class Generator:
         ])
 
     def set_registro_20(self, cnpj, mes, ano, operacao, numero, uf, tipo, serie, itens):
-        if len(cnpj) > 14:
+        if len(cnpj) != 14:
             raise ValueError('Cnpj Invalido')
 
-        if len(mes) > 2:
-            raise ValueError('Mes Invalido')
+        if 1 > int(mes) > 12:
+            raise ValueError('Mes Invalido, valor passado', mes)
 
-        if len(ano) > 4:
+        if 2000 > int(ano) > datetime.datetime.now().year:
             raise ValueError('Ano Invalido')
 
-        if len(operacao) > 2:
+        if operacao not in ['01', '05', '11', '13', '14', '22', '23']:
             raise ValueError('Operacao Invalido')
 
-        if len(numero) > 10:
+        if len(str(numero)) > 10:
             raise ValueError('Numero Invalido')
 
         if len(uf) > 2:
             raise ValueError('Uf Invalido')
 
-        if len(tipo) > 1:
+        if tipo not in [1,2,3]:
             raise ValueError('Tipo Invalido')
 
         if len(serie) > 3:
@@ -149,10 +149,10 @@ class Generator:
 
         for item in itens:
             self.set_registro_21(
-                'cgc': cnpj,
-                'produto': item['produto'],
-                'embalagem': item['embalagem'],
-                'litros': item['litros']
+                cgc=cnpj,
+                produto=item['produto'],
+                embalagem=item['embalagem'],
+                litros=item['litros']
             )
 
         self.registro_20.append([
@@ -169,16 +169,16 @@ class Generator:
         return '{0}{1}{2}{3}{4}{5}{6}{7}'.format(cnpj, mes, ano, operacao, numero, uf, tipo, serie)
 
     def set_registro_21(self, cgc, produto, embalagem, litros):
-        if len(cgc) > 14:
+        if len(cgc) != 14:
             raise ValueError('cgc Invalido')
 
         if len(produto) > 15:
             raise ValueError('produto Invalido')
 
-        if len(embalagem) > 2:
-            raise ValueError('embalagem Invalido')
+        if embalagem not in ['01', '02']:
+            raise ValueError('embalagem Invalido, valor passado: ', embalagem)
 
-        if len(litros) > 10:
+        if len(str(litros)) > 10:
             raise ValueError('litros Invalido')
 
     def set_registro_52(self, cgc, mes, ano):
@@ -281,29 +281,28 @@ class Generator:
             f.write(line)
             self.total_linhas += 1
 
-        for x in self.registro_20:
+        for nota in self.registro_20:
             line = '20'
-            line += x[0].ljust(14, '0')
-            line += x[1].ljust(2, '0')
-            line += x[2].ljust(4, '0')
-            line += x[3].ljust(2, '0')
-            line += x[4].ljust(10, '0')
-            line += x[5].ljust(2)
-            line += x[6].ljust(1)
-            line += x[7].ljust(3)
-            line += '\n'.rjust(122)
+            line += nota[0].ljust(14, '0')
+            line += str(nota[1]).rjust(2, '0')
+            line += str(nota[2]).rjust(4, '0')
+            line += str(nota[3]).ljust(2, '0')
+            line += str(nota[4]).rjust(10, '0')
+            line += str(nota[5]).ljust(2)
+            line += str(nota[6]).ljust(1)
+            line += str(nota[7]).ljust(3)
+            line += '\n'.rjust(121)
             f.write(line)
             self.total_linhas += 1
-
-        for x in self.registro_21:
-            line = '21'
-            line += x[0].ljust(14, '0')
-            line += x[1].ljust(15)
-            line += x[2].ljust(2, '0')
-            line += x[3].ljust(10, '0')
-            line += '\n'.rjust(118)
-            f.write(line)
-            self.total_linhas += 1
+            for item in nota[8]:
+                line = '21'
+                line += nota[0].ljust(14, '0')
+                line += item['produto'].ljust(15)
+                line += item['embalagem'].ljust(2, '0')
+                line += '{:0.2f}'.format(item['litros']).replace(',', '').replace('.', '').rjust(10, '0')
+                line += '\n'.rjust(118)
+                f.write(line)
+                self.total_linhas += 1
 
         for x in self.registro_52:
             line = '52'

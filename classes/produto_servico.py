@@ -64,13 +64,13 @@ class Produtos:
         finally:
             return produtos
             
-    def get_prod_vend(self):
+    def get_notas(self):
         produtos = []
-
+        gte, lte = self.get_period()
         query = {
             "DataHoraEmissao": {
-                u"$gte": datetime.strptime("2000-03-27 21:00:00.000000", "%Y-%m-%d %H:%M:%S.%f").replace(tzinfo = FixedOffset(-180, "-0300")),
-                u"$lte": datetime.strptime("2021-04-14 20:59:59.000000", "%Y-%m-%d %H:%M:%S.%f").replace(tzinfo = FixedOffset(-180, "-0300"))
+                u"$gte": gte,
+                u"$lte": lte
             },
             "$or": [
                 {
@@ -155,3 +155,22 @@ class Produtos:
                 return False
         else:
             return False
+
+    def get_period(self):
+        date = datetime.now()
+        try:
+            print('Digite a data inicial no seguinte formato DIA-MES-ANO, exemplo {0}-{1}-{2}'.format(date.day, date.month, date.year))
+            date_initial = input()
+            gte = datetime.strptime("{0} 00:00:00.000000".format(date_initial), "%d-%m-%Y %H:%M:%S.%f").replace(tzinfo = FixedOffset(-180, "-0300"))
+        except:
+            print('Data inicial ou formato, incorreto, vamos tentar de novo')
+            gte, lte = self.get_period()
+
+        try:
+            print('Digite a data final no seguinte formato DIA-MES-ANO, exemplo {0}-{1}-{2}'.format(date.day, date.month, date.year))
+            date_ended = input()
+            lte = datetime.strptime("{0} 23:59:59.000000".format(date_ended), "%d-%m-%Y %H:%M:%S.%f").replace(tzinfo = FixedOffset(-180, "-0300"))
+        except:
+            print('Data final invalida ou formato, incorreto, vamos tentar de novo')
+            gte, lte = self.get_period()
+        return gte, lte
