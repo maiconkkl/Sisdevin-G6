@@ -137,15 +137,11 @@ class Produtos:
 
     def is_prod_valid(self, doc):
         cont = 0
-        campos = ['tipo', 'classe', 'especie', 'produto', 'percentual', 'codigo_sisdevin', 'embalagem', 'quantidade_baixar']
-        if doc['CodigoInterno'] == '98':
-            print(doc['Descricao'])
+        campos = ['codigo_sisdevin', 'embalagem', 'quantidade_baixar']
         if 'CamposPersonalizado' in doc:
             for campo in doc['CamposPersonalizado']:
                 if campo['TipoPersonalizado']['Ativo'] is True:
                     campo_desc = unidecode.unidecode(campo['TipoPersonalizado']['Descricao']).lower()
-                    if doc['CodigoInterno'] == '98':
-                        print(campo_desc)
                     for x in campos:
                         if campo_desc == x and campo['Valor'] != '':
                             cont += 1
@@ -159,16 +155,14 @@ class Produtos:
     def get_period(self):
         date = datetime.now()
         try:
-            print('Digite a data inicial no seguinte formato DIA-MES-ANO, exemplo {0}-{1}-{2}'.format(date.day, date.month, date.year))
-            date_initial = input()
+            date_initial = input('Digite a data inicial no seguinte formato DIA-MES-ANO, exemplo {0}-{1}-{2}: '.format(date.day, date.month, date.year))
             gte = datetime.strptime("{0} 00:00:00.000000".format(date_initial), "%d-%m-%Y %H:%M:%S.%f").replace(tzinfo = FixedOffset(-180, "-0300"))
         except:
             print('Data inicial ou formato, incorreto, vamos tentar de novo')
             gte, lte = self.get_period()
 
         try:
-            print('Digite a data final no seguinte formato DIA-MES-ANO, exemplo {0}-{1}-{2}'.format(date.day, date.month, date.year))
-            date_ended = input()
+            date_ended = input('Digite a data final no seguinte formato DIA-MES-ANO, exemplo {0}-{1}-{2}: '.format(date.day, date.month, date.year))
             lte = datetime.strptime("{0} 23:59:59.000000".format(date_ended), "%d-%m-%Y %H:%M:%S.%f").replace(tzinfo = FixedOffset(-180, "-0300"))
         except:
             print('Data final invalida ou formato, incorreto, vamos tentar de novo')

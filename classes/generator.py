@@ -169,6 +169,7 @@ class Generator:
         return '{0}{1}{2}{3}{4}{5}{6}{7}'.format(cnpj, mes, ano, operacao, numero, uf, tipo, serie)
 
     def set_registro_21(self, cgc, produto, embalagem, litros):
+        litros = float('{:0.2f}'.format(litros))
         if len(cgc) != 14:
             raise ValueError('cgc Invalido')
 
@@ -179,7 +180,7 @@ class Generator:
             raise ValueError('embalagem Invalido, valor passado: ', embalagem)
 
         if len(str(litros)) > 10:
-            raise ValueError('litros Invalido')
+            raise ValueError('litros Invalido, valor informado: ', litros, produto)
 
     def set_registro_52(self, cgc, mes, ano):
         if len(cgc) > 14:
@@ -302,6 +303,7 @@ class Generator:
                 line += '{:0.2f}'.format(item['litros']).replace(',', '').replace('.', '').rjust(10, '0')
                 line += '\n'.rjust(118)
                 f.write(line)
+                self.total_litros += item['litros']
                 self.total_linhas += 1
 
         for x in self.registro_52:
@@ -336,9 +338,9 @@ class Generator:
         
         # Registro 90
         line = '90'
-        line += str(self.total_litros).rjust(20, '0')
-        line += str(self.total_kg).rjust(20, '0')
-        line += str(self.valor_total).rjust(20, '0')
+        line += '{:0.2f}'.format(self.total_litros).replace('.', '').replace(',', '').rjust(20, '0')
+        line += '{:0.2f}'.format(self.total_kg).replace('.', '').replace(',', '').rjust(20, '0')
+        line += '{:0.4f}'.format(self.valor_total).replace('.', '').replace(',', '').rjust(20, '0')
         line += str(self.total_linhas).rjust(10, '0')
         line += ''.rjust(88)
         f.write(line)

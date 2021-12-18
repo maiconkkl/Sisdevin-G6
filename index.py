@@ -115,7 +115,6 @@ for nota in prd.get_notas():
             registro_30.append(produto)
     
     if len(registro_20) != 0:
-        print(nota['numero'], registro_20)
         generator.set_registro_20(
             cnpj=emitente['Cnpj'],
             mes=nota['mes'],
@@ -127,5 +126,7 @@ for nota in prd.get_notas():
             serie=nota['serie'], 
             itens=registro_20
         )
+    print("Registros 20, 21, nota:",nota['numero'], 'produtos:', registro_20)
+    print("Registros 30, 31, nota:",nota['numero'], 'produtos:',  registro_30)
 
 generator.export_file()
