@@ -79,7 +79,16 @@ class Produtos:
                 {
                     u"_t": Regex(u".*NotaFiscalConsumidorEletronica.*", "i")
                 }
-            ]
+            ],
+            "Situacao.Codigo": {
+                u"$not": {
+                    u"$in": [
+                        1.0,
+                        4.0,
+                        12.0
+                    ]
+                }
+            }
         }
 
         cursor = self.collection_movimentacoes.find(query)
