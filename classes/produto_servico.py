@@ -83,9 +83,9 @@ class Produtos:
             "Situacao.Codigo": {
                 u"$not": {
                     u"$in": [
-                        1.0,
-                        4.0,
-                        12.0
+                        1,
+                        4,
+                        12
                     ]
                 }
             }
